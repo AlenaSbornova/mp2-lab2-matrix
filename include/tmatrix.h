@@ -54,7 +54,7 @@ public:
     }
     ~TDynamicVector()
     {
-        delete pMem;
+        delete[] pMem;
     }
     TDynamicVector& operator=(const TDynamicVector& v)
     {
@@ -233,7 +233,7 @@ public:
     {
         TDynamicMatrix res(sz);
         for (int i = 0; i < sz; i++) {
-            res[i] = *this[i] * val;
+            res[i] = (*this)[i] * val;
         }
         return res;
     }
@@ -244,7 +244,7 @@ public:
         if (sz = v.sz) {
             TDynamicVector res(sz);
             for (int i = 0; i < sz; i++) {
-                res[i] = *this * v;
+                res[i] = (*this)[i] * v;
             }
             return res;
         }
@@ -256,7 +256,9 @@ public:
         if (sz = m.sz) {
             TDynamicMatrix res(sz);
             for (int i = 0; i < sz; i++) {
-                res[i] = (*this)[i] + m[i];
+                for (int j = 0; j < sz; j++) {
+                    res[i][j] = (*this)[i][j] + m[i][j];
+                }
             }
             return res;
         }
@@ -266,7 +268,9 @@ public:
         if (sz = v.sz) {
             TDynamicMatrix res(sz);
             for (int i = 0; i < sz; i++) {
-                res[i] = *this[i] - m[i];
+                for (int j = 0; j < sz; j++) {
+                    res[i][j] = (*this)[i][j] + m[i][j];
+                }
             }
             return res;
         }
@@ -296,7 +300,7 @@ public:
     friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
     {
         for (size_t i = 0; i < v.sz; i++)
-            ostr << v.pMem[i] << ' ';
+            ostr << v.pMem[i] << "\n";
         return ostr;
     } 
 };
